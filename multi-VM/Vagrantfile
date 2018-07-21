@@ -1,0 +1,12 @@
+#https://manski.net/2016/09/vagrant-multi-machine-tutorial/
+Vagrant.configure("2") do |config|
+  config.vm.define "Ansible-Master"
+  config.vm.hostname = "Ansible-Master"
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.network "private_network", ip: "192.168.56.5"
+  config.ssh.forward_agent = true
+  #config.vm.network  "private_network", type: "dhcp"
+  #config.ssh.insert_key = false
+  #config.ssh.username = "bikrdas"
+  config.vm.provision  "shell", path: "user-install.sh"
+end
