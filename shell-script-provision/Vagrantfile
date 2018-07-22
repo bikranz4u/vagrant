@@ -1,0 +1,33 @@
+#https://manski.net/2016/09/vagrant-multi-machine-tutorial/
+
+BOX_IMAGE = "bento/ubuntu-16.04"
+NODE_COUNT = 2
+Vagrant.configure("2") do |config|
+  (1..NODE_COUNT).each do |i|
+    config.vm.define "Ansible-node#{i}" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.hostname = "node#{i}"
+      subconfig.vm.network :private_network, ip: "10.0.0.#{i + 10}"
+    end
+    config.vm.provision "shell" do |shell|
+      shell.name = "Script for nodes"
+      shell.path = "https://gist.githubusercontent.com/bikranz4u/f17f5ce2ed84c8d5e76cbc715b5ce1d9/raw/4982f092552ab52749c52fae4d2a559268f264a1/ansible-setup-nodes.sh"
+    end
+  end
+  config.vm.define "Ansible-Master" do |subconfig|
+    subconfig.vm.hostname = "Ansible-Master"
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.network "private_network", ip: "10.0.0.10"
+    #subconfig.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    #subconfig.vm.synced_folder "./ansible-config-files", "/home/vagrant/ansible-setup/"
+    subconfig.vm.provision "shell" do |shell|
+      shell.name = "Ansible Installation script on Master"
+      shell.path = "https://gist.githubusercontent.com/bikranz4u/8e58555834839c764f6b8c6ac4527012/raw/8f3ec555adf0feb979aa6b3a291edbbd1f96ed23/ansible-installation.sh"
+    end  
+    subconfig.vm.provision "shell" do |shell|
+      shell.name = "Provisioner script"
+      shell.priviledged = "false"
+      shell.path = "https://gist.githubusercontent.com/bikranz4u/67e5bb668ef7c3d12414cbcded797192/raw/1f1cade5541740b74de9e8d3c8f35fb65e8d8c93/password-less-login.sh"
+    end
+  end
+end
