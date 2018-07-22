@@ -1,0 +1,5 @@
+[test]
+10.0.0.11 
+10.0.0.12
+#ansible_ssh_pass=vagrant ansible_ssh_user=vagrant
+#ansible_ssh_pass=vagrant ansible_ssh_user=vagrant ansible_connection=ssh
