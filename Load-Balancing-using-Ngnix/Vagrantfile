@@ -1,0 +1,29 @@
+#http://nginx.org/en/docs/http/load_balancing.html
+#https://www.youtube.com/watch?v=aHwFKTHdKX8&index=5&list=PL2vfKi8eN0j72pmf3IjXhTXMXhm2LYlgz
+
+Vagrant.configure("2") do |config|
+  config.vm.define "lb1" do |lb1|
+    lb1.vm.box = "bento/ubuntu-16.04"
+    lb1.vm.network "forwarded_port", guest: 80, host: 8080
+    lb1.vm.network "private_network", ip: "10.0.0.10"
+    lb1.vm.provision "shell", path: "https://gist.githubusercontent.com/abraunton/263a1796578ebc487af8/raw/7da0dced1083610bf3275a9fae3dca05bf0ae51a/provision-lb.sh"
+  end
+
+  config.vm.define "web1" do |web1|
+    web1.vm.box = "bento/ubuntu-16.04"
+    web1.vm.network "private_network", ip: "10.0.0.11"
+    web1.vm.provision :shell do |shell|
+      shell.args = "1"
+      shell.path = "https://gist.githubusercontent.com/abraunton/1bfbf0aba866baa3b1fa/raw/ef4f6423de7fe5884051f63d5c6e1d55d3ee2974/provision-web.sh"
+    end
+  end
+
+  config.vm.define "web2" do |web2|
+    web2.vm.box = "bento/ubuntu-16.04"
+    web2.vm.network "private_network", ip: "10.0.0.12"
+    web2.vm.provision :shell do |shell|
+      shell.args = "2"
+      shell.path = "https://gist.githubusercontent.com/abraunton/1bfbf0aba866baa3b1fa/raw/ef4f6423de7fe5884051f63d5c6e1d55d3ee2974/provision-web.sh"
+    end
+  end
+end
