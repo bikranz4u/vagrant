@@ -1,6 +1,4 @@
 #https://manski.net/2016/09/vagrant-multi-machine-tutorial/
-#https://manski.net/2016/09/vagrant-multi-machine-tutorial/
-
 Vagrant.configure("2") do |config|
   config.vm.define "Ansible-Master" do |subconfig|
     subconfig.vm.hostname = "Ansible-Master"
