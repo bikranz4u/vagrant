@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   #Local host directory mapping with VM
-  config.vm.synced_folder "/Users/bikrdas/Desktop/DevOps/Vagrant/Basic-1/", "/var/www/html/"
+  config.vm.synced_folder "/Users/bikrdas/Desktop/DevOps/Vagrant/vagrant/single-VM/", "/var/www/html/"
 
   # Provider-specific configuration so you can fine-tune various
   config.vm.provider "virtualbox" do |vb|
@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. 
   config.vm.provision "shell", inline: <<-SHELL
      apt-get update
-     apt-get install -y apache2
+     #apt-get install -y apache2
   SHELL
   config.vm.provision "shell", run: "always", inline: <<-SHELL
      echo "Heloo"
