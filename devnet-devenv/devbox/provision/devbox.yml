@@ -1,0 +1,18 @@
+---
+# build-servers.yml
+- hosts: devbox
+  #Define user and password variables
+  vars:
+    # created with:
+    # python -c 'import crypt; print crypt.crypt("guest123", "guest")'
+    password : deZglJ0UD./IQ
+    user : devbox
+  roles:
+    - users
+    - common
+    - docker
+    - node
+    - python
+    - drone-cli
+    - pycharm
+    - atom
